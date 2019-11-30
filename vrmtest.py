@@ -1,9 +1,9 @@
-murs = {
-        "horizontaux": [[8, 4], [2, 6], [3, 8], [5, 2], [7, 8]],
-        "verticaux": [[6, 2], [4, 4], [2, 5], [7, 5], [7, 7]]
-    }
 
-if (3, 4) in [(8, 4), (4, 5)]:
-    print('oui')
-else: 
-    print('non')
+positionM = (4, 3)
+A = {'horizontaux': [(4, 5), (5, 6)], 'verticaux': [(4, 3), (7, 6)]}
+
+
+if positionM not in (A['horizontaux'] + A['verticaux']):
+    print(positionM)
+else:
+    raise ValueError('Il y a déjà un mur à cet endroit')

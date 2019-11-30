@@ -147,6 +147,9 @@ class Quoridor():
         :raises Quor   """
         if joueur != 1 or joueur != 2:
             raise QuoridorError('Numéro du joueur requis entre 1 et 2')
+        
+        for i in self.murs['horizontaux']
+        if positionM == 
         elif for i in self.murs['horizontaux'] == positionM or for i in self.murs['verticaux']:
             raise QuoridorError('la position de ce mur est déja occupé')
         
