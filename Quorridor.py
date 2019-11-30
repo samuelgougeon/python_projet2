@@ -56,6 +56,38 @@ class Quoridor():
 
         :returns: la chaîne de caractères de la représentation.
         """
+        '''fonction pour afficher le damier'''
+        u1 = self.joueurs[0]['nom']
+        u2 = self.joueurs[1]['nom']
+        le = f'Légende: 1={u1}, 2={u2}'
+        gb = []
+        for i in range(9):
+            f1 = [' ', ' ', '.', ' ']*9 + ['|']
+            f1[0] = f'\n{i+1}  |'
+            gb += [f1]
+            hb = [' ']*36 + ['|']
+            hb[0] = '\n   |'
+            gb += [hb]
+        ve = self.murs['verticaux']
+        ho = self.murs['horizontaux']
+        pos1 = self.joueurs[0]['pos']
+        pos2 = self.joueurs[1]['pos']
+        for i in range(len(ve)):
+            for j in range(3):
+                gb[ve[i][1]*2 - 2+j][ve[i][0]*4 -4] = '|'
+        for i in range(len(ho)):
+            for j in range(7):
+                gb[ho[i][1]*2 - 3][ho[i][0]*4 - 3 + j] = '-'
+        gb[pos1[1]*2 - 2][pos1[0]*4 - 2] = '1'
+        gb[pos2[1]*2 - 2][pos2[0]*4 - 2] = '2'
+        s = []
+        gb.reverse()
+        for i in range(17):
+            s += ''.join(gb[i+1])
+        print(le + '\n    '+'-'*35 + ''.join(s) +
+              '\n --|'+'-'*35+'\n   | 1   2   3   4   5   6   7   8   9')
+            
+            
 
 
 
@@ -73,9 +105,9 @@ class Quoridor():
         :raises QuoridorError: si la position est invalide pour l'état actuel du jeu.
         """
         if joueur != 1 or joueur != 2:
-            raises QuoridorError('Le joueur doit être définit entre 1 et 2')
+            raise QuoridorError('Le joueur doit être définit entre 1 et 2')
         elif 1 > positionJ[0] > 10 or 1 > positionJ[1] > 10:
-            raises QuoridorError("La position n'est pas comprise entre 1 et 9 pour x et y")
+            raise QuoridorError("La position n'est pas comprise entre 1 et 9 pour x et y")
         NETWORKX
             
         elif joueur == 1:
@@ -145,18 +177,20 @@ class Quoridor():
         :raises QuoridorError: si un mur occupe déjà cette position.
         :raises QuoridorError: si la position est invalide pour cette orientation.
         :raises Quor   """
-        if joueur != 1 or joueur != 2:
+        if joueur != 1 and joueur != 2:
             raise QuoridorError('Numéro du joueur requis entre 1 et 2')
-        elif for i in self.murs['horizontaux'] == positionM or for i in self.murs['verticaux']:
-            raise QuoridorError('la position de ce mur est déja occupé')
+        if orientation != 'vertical' and orientation != 'horizontal':
+            raise QuoridorError("l'orientation du mur doit être 'vertical' ou 'horizontal'")
+    
         
-        
-        elif position
-        elif joueur == 1:
+        if self.joueurs[joueur - 1]['murs'] == 0:
+            raise QuoridorError('le nombre de murs restant est nul')
+        if joueur == 1:
             self.joueurs[0]['murs'] -= 1
-        elif joueur == 2:
+        if joueur == 2:
             self.joueurs[1]['murs'] -= 1
-        elif orientation == 'horizontal':
+
+        if orientation == 'horizontal':
             if 1 > positionM[0] > 8 or 2 > positionM[1] > 9:
                 raise QuoridorError('La position est invalide pour cette orientation')
             for i in self.murs['horizontaux']:
@@ -165,20 +199,27 @@ class Quoridor():
             for i in self.murs['verticaux']:
                 if (i[0] + 1, i[1] - 1) == positionM:
                     raise QuoridorError('un mur est déja placé pour cette position')
-
-
-            
             self.murs['horizontaux'].append(positionM)
-        elif orientation == 'vertical':
+
+        if orientation == 'vertical':
             if 2 > positionM[0] > 9 or 1 > positionM[1] > 8:
                 raise QuoridorError('La position est invalide pour cette orientation')
             for i in self.murs['verticaux']:
                 if i == positionM or (i[0], i[1] - 1) == positionM or (i[0], i[1] + 1) == positionM:
                     raise QuoridorError('un mur est déja placé pour cette position')
             for i in self.murs['horizontaux']:
-                if (i[0] + 1, i[1] - 1) == positionM:
+                if (i[0] - 1, i[1] + 1) == positionM:
                     raise QuoridorError('un mur est déja placé pour cette position')
             self.murs['verticaux'].append(positionM)
+
+        if not nx.has_path(graphe, self.murs[0]['pos'], 'B1') or not nx.has_path(graphe, self.murs[1]['pos'], 'B2'):
+            if orientation = 'horizontal':
+                self.murs['horizontaux'].remove(positionM)
+                raise QuoridorError('la position du mur emprisonne un joueur')
+            if orientation = 'vertical':
+                self.murs['verticaux'].remove(positionM)
+                raise QuoridorError('la position du mur emprisonne un joueur')
+
 
            
 
