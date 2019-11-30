@@ -1,7 +1,5 @@
 '''Pour utiliser la fonction construire_graphe si gentiment fournie'''
 import networkx as nx
-import matplotlib.pyplot as plt
-
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
     """
@@ -63,7 +61,7 @@ def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
                 # ajouter un saut en ligne droite
                 graphe.add_edge(prédécesseur, successeur_en_ligne)
             else:
-                # ajouter les liens en diagonal
+                # ajouter les liens en diagonale
                 successeur_diag_1 = tuple(
                     joueur[i]+(joueur[-(i+1)]-prédécesseur[-(i+1)])
                     for i in range(len(joueur))
@@ -84,43 +82,4 @@ def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
         graphe.add_edge((x, 1), 'B2')
 
     return graphe
-
-dico = {
-    "joueurs": [
-        {"nom": "idul", "murs": 7, "pos": [5, 6]},
-        {"nom": "automate", "murs": 3, "pos": [5, 7]}
-    ],
-    "murs": {
-        "horizontaux": [[4, 4], [2, 6], [3, 8], [5, 8], [7, 8]],
-        "verticaux": [[6, 2], [4, 4], [2, 5], [7, 5], [7, 7]]
-    }
-}
-
-
-
-graphe1 = construire_graphe(
-    [joueur['pos'] for joueur in dico['joueurs']], 
-    dico['murs']['horizontaux'],
-    dico['murs']['verticaux'])
-
-
-
-positions = {'B1': (5, 10), 'B2': (5, 0)}
-colors = {
-    'B1': 'red', 'B2': 'green', 
-    tuple(dico['joueurs'][0]['pos']): 'red', 
-    tuple(dico['joueurs'][1]['pos']): 'green',
-}
-sizes = {
-    tuple(dico['joueurs'][0]['pos']): 300, 
-    tuple(dico['joueurs'][1]['pos']): 300
-}
-
-nx.draw(
-    graphe, 
-    pos={node: positions.get(node, node) for node in graphe},
-    node_size=[sizes.get(node, 100) for node in graphe],
-    node_color=[colors.get(node, 'gray') for node in graphe],
-)
-plt.show() 
-    
+  
