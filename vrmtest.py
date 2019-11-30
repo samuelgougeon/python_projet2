@@ -3,5 +3,7 @@ murs = {
         "verticaux": [[6, 2], [4, 4], [2, 5], [7, 5], [7, 7]]
     }
 
-for i in enumerate(murs):
-    print(i)
+if (3, 4) in [(8, 4), (4, 5)]:
+    print('oui')
+else: 
+    print('non')

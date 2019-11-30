@@ -60,36 +60,43 @@ class Quoridor:
             
     def déplacer_jeton(self, joueur, position):
         '''Pour déplacer un jeton à une position'''
+        graphe1 = construire_graphe(
+        [joueur['pos'] for joueur in état_partie()['joueurs']], 
+        état_partie()['murs']['horizontaux'],
+        état_partie()['murs']['verticaux'])
         for i in enumerate(position):
             if not 1 <= i[1] <= 9:
                 raise QuoridorError("La position n'existe pas sur le plateau de jeu")
         if not joueur in {1, 2}:
             raise QuoridorError("Le numéro du joueur n'est pas 1 ou 2.")
         else:
+            if position in [graphe1.successors(position)]
             self.joueurs[joueur - 1]['pos'] = position
-            
-        
-        
-            
-        '''raises QuoridorError: si la position est invalide pour l'état actuel du jeu'''
-        #Somehow checker avec le networkx si la position demandée ici correspond aux possibilités actuelles de mouvement du joueur.    
-    
+            else: 
+                raise QuoridorError("You can't go there bitch")
     
     def état_partie(self):
-        
+        return {
+            'joueurs': self.joueurs
+            'murs': self.murs
+        }
         
         
         dico = {
-                    'joueurs': [
-                        {'nom': nom1, 'murs': n1, 'pos': (x1, y1)},
-                        {'nom': nom2, 'murs': n2, 'pos': (x2, y2)},
-                    ],
-                    'murs': {
-                        'horizontaux': [...],
-                        'verticaux': [...],
-                    } 
-                }       
-        return dico
-        
-        
+    "joueurs": [
+        {"nom": "idul", "murs": 7, "pos": [5, 6]},
+        {"nom": "automate", "murs": 3, "pos": [5, 7]}
+    ],
+    "murs": {
+        "horizontaux": [[4, 4], [2, 6], [3, 8], [5, 8], [7, 8]],
+        "verticaux": [[6, 2], [4, 4], [2, 5], [7, 5], [7, 7]]
+    }
+}
+
+
+
+Graphe = construire_graphe(
+    [joueur['pos'] for joueur in état_partie()['joueurs']], 
+    état_partie()['murs']['horizontaux'],
+    état_partie()['murs']['verticaux'])
     
