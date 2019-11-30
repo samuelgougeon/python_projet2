@@ -78,7 +78,7 @@ class Quoridor:
             else:
                 raise QuoridorError("Cette position n'existe pas!")
         else:
-            raise QuoridorError("Le numéro du joueur n'est pas 1 ou 2.")
+            raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
         
         
     def état_partie(self):
@@ -95,68 +95,53 @@ class Quoridor:
 
 
     def placer_mur(self, joueur, positionM, orientation):
-        """
-        Pour le joueur spécifié, placer un mur à la position spécifiée.
-
-        :param joueur: le numéro du joueur (1 ou 2).
-        :param position: le tuple (x, y) de la position du mur.
-        :param orientation: l'orientation du mur ('horizontal' ou 'vertical').
-        :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
-        :raises QuoridorError: si un mur occupe déjà cette position.
-        :raises QuoridorError: si la position est invalide pour cette orientation.
-        :raises Quor   """
+        '''Pour placer un mur à une position'''
         
-        #S'assurer que le numéro de joueur est 1 ou 2 et baisser le nombre de murs en banque de 1.
-        if joueur == 1:
-            self.joueurs[0]['murs'] -= 1
-        elif joueur == 2:
-            self.joueurs[1]['murs'] -= 1
+        #S'assurer que le numéro de joueur est 1 ou 2 et traiter le nombre de murs en banque.
+        if joueur in {1, 2}:
+            if self.joueurs[joueur - 1]['murs'] != 0:
+                self.joueurs[joueur - 1]['murs'] -= 1
+            else:
+                raise QuoridorError("Tu as déjà placé tous tes murs :'(")
         else:
-            raise QuoridorError("Le numéro du joueur n'est pas 1 ou 2.")
+            raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
+    
         
-        #S'assurer qu'il n'y ait pas déjà un mur aux mêmes coordonnées
-        if positionM in (self.murs['horizontaux'] + self.murs['verticaux']):
-            raise QuoridorError('Il y a déjà un mur à cet endroit')
-        
-        
-              
+        #Placement d'un mur horizontal
         if orientation == 'horizontal':
-            #S'assurer que le mur peut être placé selon les dimensions du board
+            #S'assurer que le mur peut être placé d'après les dimensions du board
             if not 1 <= positionM[0] <= 8 or not 2 <= positionM[1] <= 9:
-                raise QuoridorError('La position est invalide pour cette orientation de mur')
+                raise QuoridorError('Tu ne peux pas placer un mur à cet endroit')
             
-            #S'assurer que le nouveau mur ne croise pas un autre mur vertical
+            #S'assurer que ce nouveau mur horizontal ne croise pas un autre mur
             if tuple(positionM[0] + 1, positionM[1] - 1) in self.murs['verticaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-            
-            #S'assurer que le nouveau mur ne croise pas un autre mur horizontal
-            if tuple(positionM[0] + 1, positionM[1]) in self.murs['horizontaux']:
+            elif tuple(positionM[0] + 1, positionM[1]) in self.murs['horizontaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-            if positionM in self.murs['horizontaux']:
+            elif positionM in self.murs['horizontaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-            if tuple(positionM[0] - 1, positionM[1]) in self.murs['horizontaux']:
+            elif tuple(positionM[0] - 1, positionM[1]) in self.murs['horizontaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')    
-            
             else:
                 self.murs['horizontaux'].append(positionM)
                 
-            
-            
+                
+        #Placement d'un mur vertical    
         elif orientation == 'vertical':
-            if tuple(positionM[0] - 1, positionM[1] + 1) not in self.murs['horizontaux']:
-                self.murs['verticaux'].append(positionM)
-            else:
+            #S'assurer que le mur peut être placé d'après les dimensions du board
+            if not 2 <= positionM[0] <= 9 or not 1 <= positionM[1] <= 8:
+                raise QuoridorError('Tu ne peux pas placer un mur à cet endroit')
+            
+            #S'assurer que ce nouveau mur vertical ne croise pas un autre mur
+            if tuple(positionM[0] - 1, positionM[1] + 1) in self.murs['horizontaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-
-            
-            self.murs['horizontaux'].append(positionM)
-        elif orientation == 'vertical':
-            if 2 > positionM[0] > 9 or 1 > positionM[1] > 8:
-                raise QuoridorError('La position est invalide pour cette orientation')
-            for i in self.murs['verticaux']:
-                if i == positionM or (i[0], i[1] - 1) == positionM or (i[0], i[1] + 1) == positionM:
-                    raise QuoridorError('un mur est déja placé pour cette position')
-            for i in self.murs['horizontaux']:
-                if (i[0] + 1, i[1] - 1) == positionM:
-                    raise QuoridorError('un mur est déja placé pour cette position')
-            self.murs['verticaux'].append(positionM)
+            elif tuple(positionM[0], positionM[1] - 1) in self.murs['verticaux']:
+                raise QuoridorError('Un mur déjà placé bloque cet endroit')
+            elif positionM in self.murs['verticaux']:
+                raise QuoridorError('Un mur déjà placé bloque cet endroit')
+            elif tuple(positionM[0], positionM[1] + 1) in self.murs['verticaux']:
+                raise QuoridorError('Un mur déjà placé bloque cet endroit')
+            else:
+                self.murs['verticaux'].append(positionM)
+                
+                
