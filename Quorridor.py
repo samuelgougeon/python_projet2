@@ -179,9 +179,18 @@ class Quoridor():
         :raises Quor   """
         if joueur != 1 and joueur != 2:
             raise QuoridorError('Numéro du joueur requis entre 1 et 2')
+<<<<<<< HEAD
         if orientation != 'vertical' and orientation != 'horizontal':
             raise QuoridorError("l'orientation du mur doit être 'vertical' ou 'horizontal'")
     
+=======
+        
+        for i in self.murs['horizontaux']
+        if positionM == 
+        elif for i in self.murs['horizontaux'] == positionM or for i in self.murs['verticaux']:
+            raise QuoridorError('la position de ce mur est déja occupé')
+        
+>>>>>>> 7ca342d8c3f9a4d410ce412e2463a4eef431d550
         
         if self.joueurs[joueur - 1]['murs'] == 0:
             raise QuoridorError('le nombre de murs restant est nul')
