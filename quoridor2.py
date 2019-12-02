@@ -316,8 +316,10 @@ class Quoridor:
             
             #S'assurer que les joueurs ne sont pas enfermés
             if nx.has_path(self.graphe, self.joueurs[0]['pos'], 'B1') is False:
+                self.murs['horizontaux'].remove(position)
                 raise QuoridorError("Le joueur 1 est enfermé! Shame on you.")
             elif nx.has_path(self.graphe, self.joueurs[1]['pos'], 'B2') is False:
+                self.murs['horizontaux'].remove(position)
                 raise QuoridorError("Le joueur 2 est enfermé! Shame on you.")
                 
         #Placement d'un mur vertical
@@ -340,6 +342,8 @@ class Quoridor:
                 
             #S'assurer que les joueurs ne sont pas enfermés
             if nx.has_path(self.graphe, self.joueurs[0]['pos'], 'B1') is False:
+                self.murs['verticaux'].remove(position)
                 raise QuoridorError("Le joueur 1 est enfermé! Shame on you.")
             elif nx.has_path(self.graphe, self.joueurs[1]['pos'], 'B2') is False:
+                self.murs['verticaux'].remove(position)
                 raise QuoridorError("Le joueur 2 est enfermé! Shame on you.")
