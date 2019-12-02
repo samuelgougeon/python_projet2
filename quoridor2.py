@@ -144,12 +144,6 @@ class Quoridor:
             self.murs['verticaux']
             )
             
-        #S'assurer que les joueurs ne sont pas enfermés par des murs
-        if nx.has_path(self.graphe, self.joueurs[0]['pos'], 'B1') is False:
-            raise QuoridorError("Le joueur 1 est enfermé! Shame on you.")
-        elif nx.has_path(self.graphe, self.joueurs[1]['pos'], 'B2') is False:
-            raise QuoridorError("Le joueur 2 est enfermé! Shame on you.")
-            
             
     def __str__(self):
         '''Pour afficher le board'''
@@ -227,17 +221,24 @@ class Quoridor:
     def déplacer_jeton(self, joueur, position):
         '''Pour déplacer un jeton à une position'''
         
+        #Les possibilités de mouvement d'un joueur selon l'état du jeu
+        self.graphe = construire_graphe(
+            [joueur['pos'] for joueur in self.joueurs],
+            self.murs['horizontaux'],
+            self.murs['verticaux']
+            )
+        
         #Contraintes et déplacement du jeton
-        if joueur in {1, 2}:
-            if 1 <= position[0] <= 9 and 1 <= position[1] <= 9:
-                if position in list(self.graphe.successors(self.joueurs[joueur - 1]['pos'])):
-                    self.joueurs[joueur - 1]['pos'] = position
-                else:
-                    raise QuoridorError("Tu ne peux pas aller là!")
-            else:
-                raise QuoridorError("Cette position n'existe pas!")
-        else:
+        if not joueur in {1, 2}:
             raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
+        if not (1 <= position[0] <= 9 and 1 <= position[1] <= 9):
+            raise QuoridorError("Cette position n'existe pas!")
+        if position not in list(self.graphe.successors(self.joueurs[joueur - 1]['pos'])):
+            raise QuoridorError("Tu ne peux pas aller là!")
+        
+        self.joueurs[joueur - 1]['pos'] = position
+            
+            
         
         
     def état_partie(self):
@@ -247,6 +248,14 @@ class Quoridor:
     def jouer_coup(self, joueur):
         '''Pour jouer le meilleur coup d'un joueur
         (manoeuvre automatisée pas très smat, sans murs)'''
+        
+        #Les possibilités de mouvement d'un joueur selon l'état du jeu
+        self.graphe = construire_graphe(
+            [joueur['pos'] for joueur in self.joueurs],
+            self.murs['horizontaux'],
+            self.murs['verticaux']
+            )
+        
         if joueur in {1, 2}:
             chemin = nx.shortest_path(self.graphe, self.joueurs[joueur - 1]['pos'], f'B{joueur}')
             options = list(self.graphe.successors(chemin[0]))
@@ -270,6 +279,13 @@ class Quoridor:
     def placer_mur(self, joueur, position, orientation):
         '''Pour placer un mur à une position'''
         
+        #Les possibilités de mouvement d'un joueur selon l'état du jeu
+        self.graphe = construire_graphe(
+            [joueur['pos'] for joueur in self.joueurs],
+            self.murs['horizontaux'],
+            self.murs['verticaux']
+            )
+        
         #S'assurer que le numéro de joueur est 1 ou 2 et traiter le nombre de murs en banque.
         if joueur in {1, 2}:
             if self.joueurs[joueur - 1]['murs'] != 0:
@@ -289,15 +305,20 @@ class Quoridor:
             #S'assurer que ce nouveau mur horizontal ne croise pas un autre mur
             if (position[0] + 1, position[1] - 1) in self.murs['verticaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-            elif (position[0] + 1, position[1]) in self.murs['horizontaux']:
+            if (position[0] + 1, position[1]) in self.murs['horizontaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-            elif position in self.murs['horizontaux']:
+            if position in self.murs['horizontaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-            elif (position[0] - 1, position[1]) in self.murs['horizontaux']:
+            if (position[0] - 1, position[1]) in self.murs['horizontaux']:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
-            else:
-                self.murs['horizontaux'].append(position)
-                
+            
+            self.murs['horizontaux'].append(position)
+            
+            #S'assurer que les joueurs ne sont pas enfermés
+            if nx.has_path(self.graphe, self.joueurs[0]['pos'], 'B1') is False:
+                raise QuoridorError("Le joueur 1 est enfermé! Shame on you.")
+            elif nx.has_path(self.graphe, self.joueurs[1]['pos'], 'B2') is False:
+                raise QuoridorError("Le joueur 2 est enfermé! Shame on you.")
                 
         #Placement d'un mur vertical
         elif orientation == 'vertical':
@@ -316,3 +337,9 @@ class Quoridor:
                 raise QuoridorError('Un mur déjà placé bloque cet endroit')
             else:
                 self.murs['verticaux'].append(position)
+                
+            #S'assurer que les joueurs ne sont pas enfermés
+            if nx.has_path(self.graphe, self.joueurs[0]['pos'], 'B1') is False:
+                raise QuoridorError("Le joueur 1 est enfermé! Shame on you.")
+            elif nx.has_path(self.graphe, self.joueurs[1]['pos'], 'B2') is False:
+                raise QuoridorError("Le joueur 2 est enfermé! Shame on you.")
