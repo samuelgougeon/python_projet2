@@ -145,75 +145,35 @@ class Quoridor:
             
             
     def __str__(self):
-        '''Pour afficher le board'''
-        
-        def afficher_damier_ascii(dico):
-            '''Pour afficher le damier à partir d'un état de jeu'''
-            #joueur 1 (personne)
-            hauteurp = dico["joueurs"][0]["pos"][1]
-            longueurp = dico["joueurs"][0]["pos"][0]
-            #joueur 2 (robot)
-            hauteurr = dico["joueurs"][1]["pos"][1]
-            longueurr = dico["joueurs"][1]["pos"][0]
-            #Murs
-            murh = dico["murs"]["horizontaux"]
-            murv = dico["murs"]["verticaux"]
-
-            #Board vide (en string)
-
-            #Lignes qui changent
-            lignes = ''
-            for i in range(17):
-                if (i+1) % 2 == 1:
-                    lignes += str(int(9-0.5*i)) + ' | .' + '   .'*8 + ' |' + '\n'
-                else:
-                    lignes += ' ' + ' |' + ' '*35 +'|' + '\n'
-
-            #Board modifié (en liste)
-            boardm = []
-            for ligne in lignes.splitlines():
-                boardm.append(list(ligne))
-
-            #Joueurs
-            for i in range(9):
-                if int(boardm[i*2][0]) == hauteurp:
-                    boardm[i*2][longueurp*4] = '1'
-                if int(boardm[i*2][0]) == hauteurr:
-                    boardm[i*2][longueurr*4] = '2'
-
-            #Murs horizontaux
-            for k in range(len(murh)):
-                for i in range(9):
-                    if int(boardm[i*2][0]) == murh[k][1]:
-                        for j in range(7):
-                            boardm[(i + 1)*2 - 1][murh[k][0]*4 - 1 + j] = '-'
-
-            #Murs verticaux
-            for k in range(len(murv)):
-                for i in range(9):
-                    if int(boardm[i*2][0]) == murv[k][1]:
-                        for j in range(3):
-                            boardm[i*2 - j][murv[k][0]*4 - 2] = '|'
-
-            #Board final (en string)
-            boardf = ''
-            for i in range(len(boardm)):
-                lignesf = ''
-                for j in range(len(boardm[0])):
-                    lignesf += str(boardm[i][j])
-                boardf += lignesf + '\n'
-            #Autres lignes non modifiées
-            legend = 'Légende: 1={}, 2={}\n'.format(dico["joueurs"][0]["nom"], dico["joueurs"][1]["nom"])
-            ligne1 = ' '*3 + '-'*35 + '\n'
-            lignef = '--|' + '-'*35 + '\n'
-            lignef2 = '  |' + ' 1'
-            for i in range(8):
-                lignef2 += ' '*3 + str(i + 2)
-            #Board final
-            boardfinal = legend + ligne1 + boardf + lignef + lignef2 +'\n'
-            print(boardfinal)
-
-        afficher_damier_ascii(self.état_partie())
+        '''fonction pour afficher le damier''' 
+        le = 'Légende: 1={}, 2={}}'.format(self.joueurs[0], self.joueurs[1])
+        gb = []
+        for i in range(9):
+            f1 = [' ', ' ', '.', ' ']*9 + ['|']
+            f1[0] = f'\n{i+1} |'
+            gb += [f1]
+            hb = [' ']*36 + ['|']
+            hb[0] = '\n  |'
+            gb += [hb]
+        ve = self.murs['verticaux']
+        ho = self.murs['horizontaux']
+        pos1 = self.joueurs[0]['pos']
+        pos2 = self.joueurs[1]['pos']
+        for i in range(len(ve)):
+            for j in range(3):
+                gb[ve[i][1]*2 - 2+j][ve[i][0]*4 -4] = '|'
+        for i in range(len(ho)):
+            for j in range(7):
+                gb[ho[i][1]*2 - 3][ho[i][0]*4 - 3 + j] = '-'
+        gb[pos1[1]*2 - 2][pos1[0]*4 - 2] = '1'
+        gb[pos2[1]*2 - 2][pos2[0]*4 - 2] = '2'
+        s = []
+        gb.reverse()
+        for i in range(17):
+            s += ''.join(gb[i+1])
+        ch = (le + '\n    '+'-'*35 + ''.join(s) +
+              '\n--|'+'-'*35+'\n  | 1   2   3   4   5   6   7   8   9')
+        return ch      
             
             
             
