@@ -74,7 +74,7 @@ class Quoridor():
         pos2 = self.joueurs[1]['pos']
         for i in range(len(ve)):
             for j in range(3):
-                gb[ve[i][1]*2 - 2+j][ve[i][0]*4 -4] = '|'
+                gb[ve[i][1]*2 - 2+j][ve[i][0]*4 - 4] = '|'
         for i in range(len(ho)):
             for j in range(7):
                 gb[ho[i][1]*2 - 3][ho[i][0]*4 - 3 + j] = '-'
@@ -109,11 +109,7 @@ class Quoridor():
         elif 1 > positionJ[0] > 10 or 1 > positionJ[1] > 10:
             raise QuoridorError("La position n'est pas comprise entre 1 et 9 pour x et y")
         NETWORKX
-            
-        elif joueur == 1:
-            self.joueur1J = positionJ
-        elif joueur == 2:
-            self.joueur2J = positionJ    
+
 
     def état_partie(self):
         """
@@ -142,11 +138,6 @@ class Quoridor():
         situe entre les lignes y-1 et y, et bloque les colonnes x et x+1. De même, un
         mur vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
         """
-        return {
-            'joueurs': self.joueurs
-            'murs': self.murs
-        }
-
     def jouer_coup(self, joueur):
         """
         Pour le joueur spécifié, jouer automatiquement son meilleur coup pour l'état actuel 
@@ -179,18 +170,12 @@ class Quoridor():
         :raises Quor   """
         if joueur != 1 and joueur != 2:
             raise QuoridorError('Numéro du joueur requis entre 1 et 2')
-<<<<<<< HEAD
-        if orientation != 'vertical' and orientation != 'horizontal':
-            raise QuoridorError("l'orientation du mur doit être 'vertical' ou 'horizontal'")
-    
-=======
         
         for i in self.murs['horizontaux']
         if positionM == 
         elif for i in self.murs['horizontaux'] == positionM or for i in self.murs['verticaux']:
             raise QuoridorError('la position de ce mur est déja occupé')
         
->>>>>>> 7ca342d8c3f9a4d410ce412e2463a4eef431d550
         
         if self.joueurs[joueur - 1]['murs'] == 0:
             raise QuoridorError('le nombre de murs restant est nul')
