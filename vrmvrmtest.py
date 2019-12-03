@@ -1,3 +1,5 @@
-position = tuple('(5, 2)')
-a = ((int(position[1]), int(position[4])))
-print(type(a))
+import quoridor2
+
+
+test = quoridor2.Quoridor('p4', 'po')
+print(test)

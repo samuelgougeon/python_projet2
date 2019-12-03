@@ -130,7 +130,6 @@ class Quoridor:
             for i in enumerate(murs['verticaux']):
                 if not 2 <= i[1][0] <= 9 or not 1 <= i[1][1] <= 8:
                     raise QuoridorError("Position de mur invalide")
-                
             self.murs = murs
         
         #Nombre maximal de murs en circulation
@@ -256,15 +255,13 @@ class Quoridor:
             self.murs['verticaux']
             )
         
-        if joueur in {1, 2}:
-            chemin = nx.shortest_path(self.graphe, self.joueurs[joueur - 1]['pos'], f'B{joueur}')
-            options = list(self.graphe.successors(chemin[0]))
-            if self.partie_terminée() is False and chemin[1] in options:
-                self.déplacer_jeton(joueur, chemin[1])
-            else:
-                raise QuoridorError("La partie est déjà terminée.")
-        else:
+        if not joueur in {1, 2}:
             raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
+        if self.partie_terminée() is False:
+            raise QuoridorError("La partie est déjà terminée.")
+        chemin = nx.shortest_path(self.graphe, self.joueurs[joueur - 1]['pos'], f'B{joueur}')
+        self.déplacer_jeton(joueur, chemin[1])
+            
 
     def partie_terminée(self):
         '''Pour arrêter la partie si elle est terminée'''
