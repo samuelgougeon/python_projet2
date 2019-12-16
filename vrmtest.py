@@ -1,10 +1,10 @@
-'''On fait nos tests ici'''
-import quoridor2
+'''Vrm pour faire des tests'''
+import quoridor
 
 
 
 def jouer_jeu(joueur1, robot):
-    partie = quoridor2.Quoridor((f'{joueur1}', f'{robot}'))
+    partie = quoridor.Quoridor((f'{joueur1}', f'{robot}'))
     partie.__str__()
     i = True
     while i:
