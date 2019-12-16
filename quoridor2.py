@@ -216,15 +216,75 @@ class Quoridor:
             self.murs['verticaux']
             )
         
-        if joueur in {1, 2}:
-            chemin = nx.shortest_path(self.graphe, self.joueurs[joueur - 1]['pos'], f'B{joueur}')
-            options = list(self.graphe.successors(chemin[0]))
-            if self.partie_terminée() is False and chemin[1] in options:
-                self.déplacer_jeton(joueur, chemin[1])
-            else:
-                raise QuoridorError("La partie est déjà terminée.")
-        else:
+        if not joueur in {1, 2}:
             raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
+        if self.partie_terminée() is not False:
+            raise QuoridorError("La partie est déjà terminée.")
+        def placer_mur_devant(joueur, a):
+            #fonction pour placer un mur devant le joueur adversaisse
+            if a[2][0]-a[1][0] == 0:
+                #Pour savoir si le chemin le plus court est vertical
+                em = [a[2][0]]
+                if a[2][0] == 9:
+                    #pour ne pas que le mur sort du damier
+                    em = [8]
+                if a[2][1]-a[1][1] == -1:
+                    #pour mettre le mur en bas du joueur lorsqu'il doit déscendre
+                    em.insert(1, a[2][1]+1)
+                else:
+                    #Pour mettre le mur en haut du joueur lorsqu'il doit monter
+                    em.insert(1, a[2][1]) 
+        
+                ori = 'horizontal'
+            if a[2][1]-a[1][1] == 0:
+            #Pour savoir si le chemin le plus court est horizontal
+                em = [a[2][1]]
+                if a[2][1] == 9:
+                    #Pour ne pas que le mur sort du damier
+                    em = [8]
+
+                if a[2][0]-a[1][0] == -1:
+                    #Pour mettre le mur à gauche lorsque le chemin le plus court est à gauche
+                    em.insert(0, a[2][0]+1)
+                else:
+                    #Pour mettre le mur à droite lorsque le chemin le plus court est à droite
+                    em.insert(0, a[2][0])
+                ori = 'vertical'
+                placer_mur(self, joueur, em, ori)
+
+
+        possibilité = [1, 2]
+        possibilité.remove(joueur)
+        adversaire = possibilité[0]
+        #L'adversaire prend le numero restant entre 1 et 2
+        chemin = nx.shortest_path(self.graphe, self.joueurs[joueur - 1]['pos'], f'B{joueur}')[0]
+        chemin_adversaire = nx.shortest_path(self.graphe, self.joueurs[adversaire - 1]['pos'], f'B{adversaire}')[0]
+        if len(chemin) <= len(chemin_adversaire):
+            from random import random
+
+            if random() <= 0.1*self.joueurs[joueur - 1]['mur']-0.1:
+                #fonction qui place des murs aléatoirement mais proportionnelement au nombres de murs restants
+                #il restera cepedant toujorus un mur pour le garder en cas où l'adversaire allait gagner
+                placer_mur_devant(joueur, chemin_adversaire)
+            else:
+                #Avancer le jeton vers son but
+                déplacer_jeton(self, joueur, chemin[1])    
+
+
+
+            
+        if len(chemin_adversaire) == 2:
+            #toujours placer un mur devant l'adversaire lorsqu'il est à un déplacement de gagner
+            placer_mur_devant(joueur, chemin_adversaire)
+
+        else:
+            #Si le chemin de l'adversaire est plus court que le nôtre, on place un mur devant celui-ci
+            placer_mur_devant(joueur, chemin_adversaire)
+
+        
+
+            
+           
 
     def partie_terminée(self):
         '''Pour arrêter la partie si elle est terminée'''
