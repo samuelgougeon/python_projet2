@@ -1,5 +1,8 @@
-'''Vrm vrm pour faire des tests'''
+'''Pour exécuter le jeu'''
 import argparse
+import api2
+import quoridor
+import quoridorX
 
 
 #Fonction 1
