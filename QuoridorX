@@ -1,11 +1,14 @@
 class QuoridorX(Quoridor):
     def afficher(self):
+        import turtle
+
+        
         wn = turtle.Screen()
         wn.setup(464, 564)
         le = turtle.Turtle()
         le.penup()
         le.goto(0, 254)
-        le.write('Légende: bleu={}, rouge={}}'.format(self.joueurs[0], self.joueurs[1]), True, 'center', font=('Cambria', 14))
+        le.write('Légende: bleu={}, rouge={}'.format(self.joueurs[0], self.joueurs[1]), True, 'center', font=('Cambria', 14))
         damier = turtle.Turtle()
         damier.shape('square')
         damier.shapesize(2)
