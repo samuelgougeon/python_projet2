@@ -4,18 +4,6 @@ import requests
 
 URL_BASE = 'https://python.gel.ulaval.ca/quoridor/api/'
 
-#fonction 3
-def lister_parties(idul):
-    '''Lister les parties quand on appelle -l'''
-
-    rep = requests.get(URL_BASE+'lister/', params={'idul': idul})
-    if rep.status_code == 200:
-        rep = rep.json()
-        return rep['parties']
-
-    else:
-        rep = rep.json()
-        raise RuntimeError(rep['message'])
 
 #fonction 4
 def débuter_partie(idul):
