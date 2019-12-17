@@ -214,7 +214,6 @@ class Quoridor:
             self.murs['horizontaux'],
             self.murs['verticaux']
             )
-
         if not joueur in {1, 2}:
             raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
         if self.partie_terminée() is not False:
@@ -270,7 +269,6 @@ class Quoridor:
                 #Avancer le jeton vers son but
                 Quoridor.déplacer_jeton(self, joueur, chemin[1])    
 
-
         if len(chemin_adversaire) == 2:
             #toujours placer un mur devant l'adversaire lorsqu'il est à un déplacement de gagner
             placer_mur_devant(joueur, chemin_adversaire)
@@ -278,7 +276,6 @@ class Quoridor:
         else:
             #Si le chemin de l'adversaire est plus court que le nôtre, on place un mur devant celui-ci
             placer_mur_devant(joueur, chemin_adversaire)
-
 
     def partie_terminée(self):
         '''Pour arrêter la partie si elle est terminée'''
