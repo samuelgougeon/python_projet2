@@ -360,3 +360,4 @@ class Quoridor:
             elif nx.has_path(self.graphe, self.joueurs[1]['pos'], 'B2') is False:
                 self.murs['verticaux'].remove(position)
                 raise QuoridorError("Le joueur 2 est enfermé! Shame on you.")
+

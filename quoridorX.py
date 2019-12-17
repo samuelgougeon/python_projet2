@@ -55,3 +55,4 @@ class QuoridorX(quoridor.Quoridor):
         j1.goto((self.joueurs[0]['pos'][0])*48 - 240, (self.joueurs[0]['pos'][1])*48 - 240)
         j2.goto((self.joueurs[1]['pos'][0])*48 - 240, (self.joueurs[1]['pos'][1])*48 - 240)
         wn.mainloop()
+
