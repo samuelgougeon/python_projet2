@@ -206,8 +206,7 @@ class Quoridor:
         return {'joueurs': self.joueurs, 'murs': self.murs}
 
     def jouer_coup(self, joueur):
-        '''Pour jouer le meilleur coup d'un joueur
-        (manoeuvre automatisée pas très smat, sans murs)'''
+    
         
         #Les possibilités de mouvement d'un joueur selon l'état du jeu
         self.graphe = construire_graphe(
