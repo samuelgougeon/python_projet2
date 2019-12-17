@@ -147,7 +147,7 @@ class Quoridor:
             
     def __str__(self):
         '''fonction pour afficher le damier''' 
-        le = 'Légende: 1={}, 2={}}'.format(self.joueurs[0], self.joueurs[1])
+        le = 'Légende: 1={}, 2={}'.format(self.joueurs[0], self.joueurs[1])
         gb = []
         for i in range(9):
             f1 = [' ', ' ', '.', ' ']*9 + ['|']
@@ -174,7 +174,7 @@ class Quoridor:
             s += ''.join(gb[i+1])
         ch = (le + '\n    '+'-'*35 + ''.join(s) +
               '\n--|'+'-'*35+'\n  | 1   2   3   4   5   6   7   8   9')
-        return ch      
+        return ch
             
             
             

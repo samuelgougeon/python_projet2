@@ -1,4 +1,58 @@
+import Quoridor
 class QuoridorX(Quoridor):
+    def __init__(self, joueurs, murs=None):
+
+        #Erreurs de base à soulever
+        if not hasattr(joueurs, '__iter__'):
+            raise QuoridorError("Ton argument 'joueurs' n'est pas un itérable.")
+        if len(joueurs) > 2:
+            raise QuoridorError("On ne veut jouer qu'à deux joueurs.")
+        
+        #Si 'joueurs' est un itérable de strings, créer la liste de dictionnaires
+        if isinstance(joueurs[0], str) and isinstance(joueurs[1], str):
+            self.joueurs = [
+                {'nom': joueurs[0], 'murs': 10, 'pos': (5, 1)},
+                {'nom': joueurs[1], 'murs': 10, 'pos': (5, 9)},
+            ]
+            
+        #Si 'joueurs' est un itérable de dictionnaires, les traiter
+        if isinstance(joueurs[0], dict) and isinstance(joueurs[1], dict):
+            for i in joueurs:
+                if not 0 <= joueurs[i]['murs'] <= 10:
+                    raise QuoridorError("Le nombre de murs à placer est entre 0 et 10.")
+                if not 1 <= joueurs[i]['pos'][0] <= 9 or not 1 <= joueurs[i]['pos'][1] <= 9:
+                    raise QuoridorError("La position que tu essaies d'entrer n'est pas valide!")
+            self.joueurs = joueurs
+            
+        #Si les murs n'existent pas encore, créer le dictionnaire
+        if murs is None:
+            self.murs = {'horizontaux': [], 'verticaux': []}
+            
+        #Si les murs existent, les traiter
+        else:
+            if not isinstance(murs, dict):
+                raise QuoridorError("Ton argument 'murs' n'est pas un dictionnaire.")
+                
+            for i in enumerate(murs['horizontaux']):
+                if not 1 <= i[1][0] <= 8 or not 2 <= i[1][1] <= 9:
+                    raise QuoridorError("Position de mur invalide")
+            for i in enumerate(murs['verticaux']):
+                if not 2 <= i[1][0] <= 9 or not 1 <= i[1][1] <= 8:
+                    raise QuoridorError("Position de mur invalide")
+                
+            self.murs = murs
+        
+        #Nombre maximal de murs en circulation
+        if self.joueurs[0]['murs'] + self.joueurs[1]['murs'] + len(self.murs['horizontaux']) + len(self.murs['verticaux']) != 20:
+            raise QuoridorError("Nombre total de murs invalide (seul nombre autorisé: 20).")
+        
+        #Les possibilités de mouvement d'un joueur selon l'état du jeu
+        self.graphe = construire_graphe(
+            [joueur['pos'] for joueur in self.joueurs],
+            self.murs['horizontaux'],
+            self.murs['verticaux']
+            )
+        self.afficher()
     def afficher(self):
         import turtle
 
