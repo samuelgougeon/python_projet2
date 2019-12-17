@@ -190,16 +190,14 @@ class Quoridor:
 
 
     def jouer_coup(self, joueur):
-        '''Pour jouer le meilleur coup d'un joueur
-        (manoeuvre automatisée pas très smat, sans murs)'''
-
+    
+        
         #Les possibilités de mouvement d'un joueur selon l'état du jeu
         self.graphe = construire_graphe(
             [joueur['pos'] for joueur in self.joueurs],
             self.murs['horizontaux'],
             self.murs['verticaux']
             )
-<<<<<<< HEAD:quoridor2.py
         
         if not joueur in {1, 2}:
             raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
@@ -235,7 +233,7 @@ class Quoridor:
                     #Pour mettre le mur à droite lorsque le chemin le plus court est à droite
                     em.insert(0, a[2][0])
                 ori = 'vertical'
-                placer_mur(self, joueur, em, ori)
+                Quoridor.placer_mur(self, joueur, em, ori)
 
 
         possibilité = [1, 2]
@@ -253,11 +251,8 @@ class Quoridor:
                 placer_mur_devant(joueur, chemin_adversaire)
             else:
                 #Avancer le jeton vers son but
-                déplacer_jeton(self, joueur, chemin[1])    
+                Quoridor.déplacer_jeton(self, joueur, chemin[1])    
 
-
-
-            
         if len(chemin_adversaire) == 2:
             #toujours placer un mur devant l'adversaire lorsqu'il est à un déplacement de gagner
             placer_mur_devant(joueur, chemin_adversaire)
@@ -265,31 +260,6 @@ class Quoridor:
         else:
             #Si le chemin de l'adversaire est plus court que le nôtre, on place un mur devant celui-ci
             placer_mur_devant(joueur, chemin_adversaire)
-
-        
-
-            
-           
-=======
-
-        if joueur not in [1, 2]:
-            raise QuoridorError("Le numéro du joueur doit être 1 ou 2.")
-        if self.partie_terminée() is not False:
-            raise QuoridorError("La partie est déjà terminée.")
-        
-        #Stratégie du meilleur coup
-        if joueur == 1:
-            cheminC1 = nx.shortest_path(self.graphe, self.joueurs[0]['pos'], 'B1')
-            cheminC2 = nx.shortest_path(self.graphe, self.joueurs[1]['pos'], 'B2')
-            if cheminC1
-        
-        if joueur == 2:
-            cheminC2 = nx.shortest_path(self.graphe, self.joueurs[1]['pos'], 'B2')
-            cheminC1 = nx.shortest_path(self.graphe, self.joueurs[0]['pos'], 'B1')
-        
-        self.déplacer_jeton(joueur, chemin[1])
-
->>>>>>> 3bc8632bd869fb2647f916d9cfb27c95e0377390:quoridor.py
 
     def partie_terminée(self):
         '''Pour arrêter la partie si elle est terminée'''
